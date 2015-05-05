@@ -1,0 +1,15 @@
+<?php
+
+$host = "localhost";
+$dbname = "";
+$username = "";
+$password = "";
+
+/*//CONNECTION TEST
+$link = pg_connect("host=".$host." dbname=".$dbname." user=".$username." password=".$password."")
+or die("Can't connect to database".pg_last_error());
+
+print_r($link);
+*/
+
+?>
