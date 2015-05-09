@@ -54,6 +54,13 @@
     $('[rel=panels]').panels();
     $('[rel=tree]').tree();
     $('[rel=summernote]').summernote();
+    $('[rel=summernote_message]').summernote({
+      height: 200,
+      toolbar: [
+        ['font', ['bold', 'italic', 'underline', 'clear']],
+        ['para', ['ul', 'ol', 'paragraph']],
+      ]
+    });
     $('[rel=selectize]').selectize({
       plugins: ['remove_button'],
       dropdownClass: 'selectize-dropdown animated fadeIn fast'

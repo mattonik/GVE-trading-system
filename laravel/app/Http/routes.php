@@ -25,6 +25,10 @@ Route::get('user/edit/{id}', 'UserController@showProfile');
 
 Route::get('user/{id}', 'UserController@showProfile');
 
+Route::get('messages', 'MessagesController@showMessages');
+Route::get('message/new', 'MessagesController@newMessage');
+Route::post('message/send', 'MessagesController@sendMessage');
+
 Route::get('logout', function () {
 	Auth::logout();
 	return redirect('home');

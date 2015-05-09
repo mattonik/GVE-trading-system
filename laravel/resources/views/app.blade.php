@@ -66,11 +66,21 @@
         								</span>
 									</a>
 								</li>
+								@if (Auth::user()->access_rights === 1)
 								<li class="{{ $active === 'users' ? 'active' : '' }}">
 									<a rel="popover-sidebar" data-container="body" data-placement="right" data-content="A mashup of components, mainly visual indicators." href="{{ url('users') }}">
 										<i class="oc-partial-icon icm icm-users"></i>
         								<span class="oc-partial-menu-item">
           									Users
+        								</span>
+									</a>
+								</li>
+								@endif
+								<li class="{{ $active === 'messages' ? 'active' : '' }}">
+									<a rel="popover-sidebar" data-container="body" data-placement="right" data-content="A mashup of components, mainly visual indicators." href="{{ url('messages') }}">
+										<i class="oc-partial-icon icm icm-envelope2"></i>
+        								<span class="oc-partial-menu-item">
+          									Messages
         								</span>
 									</a>
 								</li>
@@ -107,7 +117,7 @@
     						<li class="dropdown">
       							<a href="#" data-toggle="dropdown" class="navbar-img-link">
         							<img class="img-circle" src="../images/faker/avatars/48/Faces_Users-11.png" />
-        							<span class="hidden-xs hidden-sm hidden-md">{{ Auth::user()->name }}</span>
+        							<span class="hidden-xs hidden-sm hidden-md">{{ Auth::user()->name }} {{ Auth::user()->surname }}</span>
         							<b class="caret"></b>
     							</a>
       							<ul class="dropdown-menu animated fadeIn fast">
