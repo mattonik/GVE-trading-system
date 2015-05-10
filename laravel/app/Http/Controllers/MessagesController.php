@@ -5,6 +5,7 @@ use App\Message;
 use App\User;
 use Request;
 use Auth;
+use Carbon\Carbon;
 
 class MessagesController extends Controller {
 
@@ -30,14 +31,54 @@ class MessagesController extends Controller {
 	}
 
 	/**
-	 * Show the application dashboard to the user.
+	 * Show messages to the user.
 	 *
 	 * @return Response
 	 */
 	public function showMessages()
 	{
 		return view('messages.inbox', [
-			'messages' => Message::where('to_id', '=', Auth::user()->id)->get(),
+			'messages' => Message::where('to_id', '=', Auth::user()->id)->orderBy('created_at', 'desc')->get(),
+			'inboxCount' => Message::where('to_id', '=', Auth::user()->id)->count(),
+			'bodyClass' => 'htmls_pages_inbox', 
+			'active' => 'messages'
+		]);
+	}
+
+	/**
+	 * Show sent messages to the user.
+	 *
+	 * @return Response
+	 */
+	public function showSentMessages()
+	{
+		return view('messages.sent', [
+			'messages' => Message::where('from_id', '=', Auth::user()->id)->orderBy('created_at', 'desc')->get(),
+			'inboxCount' => Message::where('to_id', '=', Auth::user()->id)->count(),
+			'bodyClass' => 'htmls_pages_inbox', 
+			'active' => 'messages'
+		]);
+	}
+
+	/**
+	 * Show selected message to the user.
+	 *
+	 * @param $id
+	 * @return Response
+	 */
+	public function showMessage($id)
+	{
+		$msg = Message::find($id);
+		
+		if(!$msg->opened_at)
+		{
+			$msg->opened_at = Carbon::now();
+			$msg->save();
+		}
+
+		return view('messages.detail', [
+			'message' => $msg,
+			'inboxCount' => Message::where('to_id', '=', Auth::user()->id)->count(),
 			'bodyClass' => 'htmls_pages_inbox', 
 			'active' => 'messages'
 		]);
@@ -45,7 +86,29 @@ class MessagesController extends Controller {
 
 	public function newMessage() {
 		return view('messages.new', [
-			'messages' => Message::where('to_id', '=', Auth::user()->id)->get(),
+			'inboxCount' => Message::where('to_id', '=', Auth::user()->id)->count(),
+			'users' => User::all(),
+			'bodyClass' => 'htmls_pages_inbox htmls_pages_inbox_compose',
+			'active' => 'messages'
+		]);
+	}
+
+	public function forwardMessage($id) {
+		return view('messages.new', [
+			'message' => Message::find($id),
+			'forward' => true,
+			'inboxCount' => Message::where('to_id', '=', Auth::user()->id)->count(),
+			'users' => User::all(),
+			'bodyClass' => 'htmls_pages_inbox htmls_pages_inbox_compose',
+			'active' => 'messages'
+		]);
+	}
+
+	public function replyMessage($id) {
+		return view('messages.new', [
+			'message' => Message::find($id),
+			'reply' => true,
+			'inboxCount' => Message::where('to_id', '=', Auth::user()->id)->count(),
 			'users' => User::all(),
 			'bodyClass' => 'htmls_pages_inbox htmls_pages_inbox_compose',
 			'active' => 'messages'
@@ -61,6 +124,7 @@ class MessagesController extends Controller {
 		$msg->to_id = $data['to_id'];
 		$msg->from_id = Auth::user()->id;
 		$msg->message = $data['message'];
+		$msg->subject = $data['subject'];
 
 		$msg->save();
 

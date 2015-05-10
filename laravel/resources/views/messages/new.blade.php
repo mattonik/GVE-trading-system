@@ -9,7 +9,10 @@
     		</a>
     		<ul class="nav nav-pills-light nav-stacked nav-compact nav-select padded-top padded-bottom">
     			<li class="active">
-					<a href="{{ url('messages') }}">Inbox <span class="badge pull-right">{{ count($messages) }}</span></a>
+					<a href="{{ url('messages') }}">Inbox <span class="badge pull-right">{{ $inboxCount }}</span></a>
+				</li>
+				<li>
+					<a href="{{ url('messages/sent') }}">Sent</a>
 				</li>
     		</ul>
     	</div>
@@ -24,7 +27,7 @@
 			              	<div class="col-sm-11">
 			              		<select name="to_id" multiple aria-required="true" class="string form-control" rel="selectize-tags">
 			              			@foreach ($users as $user)
-			              			<option value="{{ $user->id }}">{{ $user->name }} {{ $user->surname }}</option>
+			              			<option value="{{ $user->id }}" @if (isset($reply) && $message->from_id === $user->id)selected="selected"@endif>{{ $user->name }} {{ $user->surname }}</option>
 			              			@endforeach
 			              		</select>
 			              	</div>
@@ -32,14 +35,14 @@
 			            <div class="form-group string required">
 			            	<label for="compose-subject" class="control-label col-sm-1">Subject</label>
 			              	<div class="col-sm-11">
-			                	<input aria-required="true" class="string string required form-control" maxlength="255" name="subject" placeholder="Subject" required="required" size="255" type="text">
+			                	<input aria-required="true" class="string string required form-control" maxlength="255" name="subject" placeholder="Subject" required="required" size="255" type="text" @if(isset($reply)) value="Re: {{ $message->subject }}" @endif @if(isset($forward)) value="{{ $message->subject }}" @endif>
 			              	</div>
 			            </div>
 			            <div class="form-group text required">
 			              	<label for="compose-message" class="control-label col-sm-1">Message</label>
 			              	<div class="col-sm-11">
 			                	<textarea aria-required="true" class="text required form-control" name="message" placeholder="Message" required="required" rel="summernote_message">
-			                		
+			                		@if(isset($reply) || isset($forward))<br /><br />---------<br />{{ $message->message }}@endif
 			                	</textarea>
 			              	</div>
 			            </div>

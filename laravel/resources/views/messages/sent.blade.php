@@ -8,10 +8,10 @@
     			<i class="fa fa-pencil"></i> Compose
     		</a>
     		<ul class="nav nav-pills-light nav-stacked nav-compact nav-select padded-top padded-bottom">
-    			<li class="active">
+    			<li>
 					<a href="{{ url('messages') }}">Inbox <span class="badge pull-right">{{ $inboxCount }}</span></a>
 				</li>
-				<li>
+				<li class="active">
 					<a href="{{ url('messages/sent') }}">Sent</a>
 				</li>
     		</ul>
@@ -30,10 +30,10 @@
 			                    		<i class="fa fa-star-o fa-lg"></i>
 			                  		</label>-->
 			                	</th>
-			                	<th>Sender</th>
+			                	<th>To</th>
 			                	<th>Message</th>
 			                	<th class="hidden-xs">&nbsp;</th>
-			                	<th class="hidden-xs">Recieved</th>
+			                	<th class="hidden-xs">Sent</th>
 			              	</tr>
 			            </thead>
 			            <tbody data-link="row" class="rowlink">
@@ -44,11 +44,11 @@
 				                    	<input type="checkbox" rel="icheck" class="table-checkable-row">
 				                	</label>
 				                  	<!--<label class="text-warning">
-				                    	<i class="fa fa-star fa-lg"></i>
+				                    	<i class="fa fa-star-o fa-lg"></i>
 				                  	</label>-->
 				                </td>
 				                <td class="inbox-name">
-				                  	{{ $message->sender->name }} {{ $message->sender->surname }}
+				                  	{{ $message->reciever->name }} {{ $message->reciever->surname }}
 				                  	<span class="hidden-lg hidden-md hidden-sm">
 				                    	<i class="fa fa-paperclip"></i>
 				                  	</span>
@@ -56,7 +56,7 @@
 				                <td class="inbox-email">
 									<a href="{{ url('message/detail', ['id' => $message->id]) }}">
 										<span>
-											<span>@if (!$message->opened_at)<strong> @endif{{ $message->subject }} @if (!$message->opened_at)</strong> @endif</span>
+											<span>{{ $message->subject }}</span>
 				                    	</span>
 									</a>                
 									<td class="hidden-xs">

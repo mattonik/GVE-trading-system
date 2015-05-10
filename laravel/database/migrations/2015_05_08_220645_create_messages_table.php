@@ -16,7 +16,8 @@ class CreateMessagesTable extends Migration {
 		{
 			$table->increments('id');
 			$table->longText('message');
-			$table->timestamp('opened_at');
+			$table->string('subject', 200);
+			$table->timestamp('opened_at')->nullable();
 			
 			$table->integer('from_id')->unsigned();
 			$table->foreign('from_id')->references('id')->on('users');

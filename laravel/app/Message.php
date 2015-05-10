@@ -19,7 +19,7 @@ class Message extends Model {
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['to_id', 'from_id', 'message'];
+	protected $fillable = ['to_id', 'from_id', 'message', 'subject'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -28,5 +28,15 @@ class Message extends Model {
 	 */
 
 	protected $dates = ['deleted_at'];
+
+	public function sender()
+    {
+        return $this->belongsTo('App\User', 'from_id');
+    }
+
+    public function reciever()
+    {
+        return $this->belongsTo('App\User', 'to_id');
+    }
 
 }

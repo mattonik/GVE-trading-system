@@ -26,7 +26,13 @@ Route::get('user/edit/{id}', 'UserController@showProfile');
 Route::get('user/{id}', 'UserController@showProfile');
 
 Route::get('messages', 'MessagesController@showMessages');
+Route::get('messages/sent', 'MessagesController@showSentMessages');
 Route::get('message/new', 'MessagesController@newMessage');
+
+Route::get('message/detail/{id}', 'MessagesController@showMessage');
+Route::get('message/forward/{id}', 'MessagesController@forwardMessage');
+Route::get('message/reply/{id}', 'MessagesController@replyMessage');
+
 Route::post('message/send', 'MessagesController@sendMessage');
 
 Route::get('logout', function () {
